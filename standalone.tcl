@@ -1,4 +1,19 @@
-source core.tcl
+#!/usr/bin/env tclsh
+# apHTTP - a programmable HTTP server in Tcl (standalone implementation)
+# Copyright (C) Tim K/RoverAMD 2019 <timprogrammer@rambler.ru>.
+#
+# Permission to use, copy, modify, and/or distribute this software for
+# any purpose with or without fee is hereby granted.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+# OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+source [file dirname [info script]]/core.tcl
 
 set allUrls {}
 set allExtensions [dict create .html text/html .css text/css .htm text/html .js application/javascript .jpeg image/jpeg .png image/png .jpg image/jpeg .gif image/gif .webp image/webp]
