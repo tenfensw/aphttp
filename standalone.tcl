@@ -101,7 +101,7 @@ proc onConnection {dir sock sender} {
             connectionError $sock 403 Forbidden
         } else {
             set desc [open $fn r]
-            fconfigure $desc -buffering none -translation binary -enconding binary
+            fconfigure $desc -buffering none -translation binary -encoding binary
             set ctnt [read $desc]
             close $desc
             puts $sock "HTTP/1.1 200 OK"
@@ -151,9 +151,12 @@ foreach line [split [string map [list "\r\n" "\n"] $mapCtntRaw] \n] {
         if {! [file isdirectory $dirv]} {
             error "No such directory - \"$dirv\"."
         }
-        foreach fn [glob -directory $dirv -type f *] {
+        set oldPwd [pwd]
+        cd $dirv
+        foreach fn [glob -directory . -type f *] {
             lappend allUrls [dict create found 1 url "/[lindex $lineSplit 1]/$fn" cgi 0 what $fn]
         }
+        cd $oldPwd
     } elseif {[lindex $lineSplit 1] == "is" && [llength $lineSplit] >= 3} {
         set ext [lindex $lineSplit 0]
         if {[string index $ext 0] != {.}} {
