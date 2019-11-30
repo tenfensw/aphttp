@@ -1,0 +1,62 @@
+= apHTTP
+
+**apHTTP** is an extremely minimalistic and embeddable web server written in Tcl as well as a library for creating custom HTTP servers. 
+
+== Usage
+
+[source,bash]
+----
+$ tclsh standalone.tcl <port> <directory containing HTML, CGI and various other content> <map file>
+----
+
+apHTTP itself by default does not serve anything and is meant to be specified with URL maps on which the server must serve the necessary content. This means that if you do have an ``index.html`` file in the specified static files folder by visiting ``localhost`` on the port on which you've specified you will get a ``404 Not Found``.
+
+The map file that you need to specify must contain at least one URL map. For example, to serve index.html when your server retreives a connection, add this line to your map file, which must have an extension of ``.map``:
+
+[source]
+----
+/ => index.html
+----
+
+Assuming that you'll be running the server on port 8000, if the user visits ``http://localhost:8000`` or ``http://<your IP>:8000/``, the ``index.html`` file will be presented to the user.
+
+If you have a CGI script that you would like to run, you can create a clean URL for it and add it to the map file, specifying explicitly that the file is executable. For example:
+
+[source]
+----
+/meower => cgi-bin/generate-meow.tcl CGI
+----
+
+This will mean that if the user visits ``http://localhost:8000/meower`` or ``http://<your IP>:8000/meower``, the ``cgi-bin/generate-meow.tcl`` script will be executed. Notice that:
+
+[squares]
+- if the CGI script is not chmodded as executable, the user will get a ``500 Internal Server Error``
+- if the CGI script exists with a non-zero return code, the user will also get a ``500 Internal Server Error``
+
+If you want to serve all static content from a specific directory without specifying any clean URLs or URL maps, you can use the ``all`` directive and specify the relative path to the folder that you want to serve. For example, I have a folder ``sounds``. If I specify this directive in my map file:
+
+[source]
+----
+all /sounds
+----
+
+All of the files from the folder ``sounds`` can be accessed by the user directly. For example: ``http://localhost:8000/sounds/meow.wav``.
+
+Apart from URL maps, the map file can be filled with mime-type declarations, like this:
+
+[source]
+----
+# the line below will mean that all files with extension .wav will be server with mime-type audio/wav
+wav is audio/wav
+----
+
+== Limitations
+
+[squares]
+- No POST request support, currently. It will be added in a future release, though.
+- No CGI support on Windows. It might not be added in the future, because of problems with environment variables.
+- No documentation for the library part of apHTTP. It will be added soon.
+
+== License
+
+OBSD. See ``LICENSE`` for more info.
